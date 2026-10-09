@@ -17,6 +17,7 @@ package server
 import (
 	"context"
 	"errors"
+	"fmt"
 	"os"
 	"strings"
 	"sync"
@@ -145,11 +146,11 @@ func (s *Server) NewAdapter(ctx context.Context, in *pb.NewAdapterRequest) (*pb.
 	return &pb.NewAdapterReply{Handler: int32(h)}, nil
 }
 
-func (s *Server) parseParam(param, matcher string) (interface{}, string) {
+func (s *Server) parseParam(param, matcher string) (interface{}, string, error) {
 	if strings.HasPrefix(param, "ABAC::") {
 		attrList, err := resolveABAC(param)
 		if err != nil {
-			panic(err)
+			return nil, matcher, fmt.Errorf("invalid ABAC parameter: %w", err)
 		}
 		for k, v := range attrList.nameMap {
 			old := "." + k
@@ -157,9 +158,9 @@ func (s *Server) parseParam(param, matcher string) (interface{}, string) {
 				matcher = strings.Replace(matcher, old, "."+v, -1)
 			}
 		}
-		return attrList, matcher
+		return attrList, matcher, nil
 	} else {
-		return param, matcher
+		return param, matcher, nil
 	}
 }
 
@@ -173,7 +174,10 @@ func (s *Server) Enforce(ctx context.Context, in *pb.EnforceRequest) (*pb.BoolRe
 	m := e.GetModel()["m"]["m"].Value
 
 	for index := range in.Params {
-		param, m = s.parseParam(in.Params[index], m)
+		param, m, err = s.parseParam(in.Params[index], m)
+		if err != nil {
+			return &pb.BoolReply{Res: false}, err
+		}
 		params = append(params, param)
 	}
 

@@ -17,6 +17,7 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"log"
@@ -25,8 +26,20 @@ import (
 	pb "github.com/casbin/casbin-server/proto"
 	"github.com/casbin/casbin-server/server"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/reflection"
+	"google.golang.org/grpc/status"
 )
+
+func recoverInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			log.Printf("panic in %s: %v", info.FullMethod, r)
+			err = status.Errorf(codes.Internal, "internal error: %v", r)
+		}
+	}()
+	return handler(ctx, req)
+}
 
 func main() {
 	var port int
@@ -41,7 +54,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
-	s := grpc.NewServer()
+	s := grpc.NewServer(grpc.UnaryInterceptor(recoverInterceptor))
 	pb.RegisterCasbinServer(s, server.NewServer())
 	// Register reflection service on gRPC server.
 	reflection.Register(s)
