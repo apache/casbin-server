@@ -2,17 +2,14 @@ Casbin Server
 ====
 
 <p align="center">
-  <a href="#badge">
-    <img alt="semantic-release" src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg">
-  </a>
   <a href="https://hub.docker.com/r/casbin/casbin-server">
     <img alt="docker pull casbin/casbin-server" src="https://img.shields.io/docker/pulls/casbin/casbin-server.svg">
   </a>
-  <a href="https://github.com/casbin/casbin-server/actions/workflows/default.yml">
-    <img alt="GitHub Workflow Status (branch)" src="https://github.com/casbin/casbin-server/workflows/Build/badge.svg?style=flat-square">
+  <a href="https://github.com/apache/casbin-server/actions/workflows/ci.yml">
+    <img alt="GitHub Workflow Status (branch)" src="https://github.com/apache/casbin-server/actions/workflows/ci.yml/badge.svg">
   </a>
-  <a href="https://github.com/casbin/casbin-server/releases/latest">
-    <img alt="GitHub Release" src="https://img.shields.io/github/v/release/casbin/casbin-server.svg">
+  <a href="https://github.com/apache/casbin-server/releases/latest">
+    <img alt="GitHub Release" src="https://img.shields.io/github/v/release/apache/casbin-server.svg">
   </a>
   <a href="https://coveralls.io/github/casbin/casbin-server?branch=master">
     <img alt="Coverage Status" src="https://coveralls.io/repos/github/casbin/casbin-server/badge.svg?branch=master">
@@ -23,11 +20,8 @@ Casbin Server
 </p>
 
 <p align="center">
-  <a href="https://goreportcard.com/report/github.com/casbin/casbin-server">
-    <img alt="Go Report Card" src="https://goreportcard.com/badge/github.com/casbin/casbin-server?style=flat-square">
-  </a>
-  <a href="https://github.com/casbin/casbin-server/blob/master/LICENSE">
-    <img src="https://img.shields.io/github/license/casbin/casbin-server?style=flat-square" alt="license">
+  <a href="https://github.com/apache/casbin-server/blob/master/LICENSE">
+    <img src="https://img.shields.io/github/license/apache/casbin-server?style=flat-square" alt="license">
   </a>
   <a href="https://discord.gg/5rPsrAzK7S">
     <img alt="Discord" src="https://img.shields.io/discord/1022748306096537660?style=flat-square&logo=discord&label=discord&color=5865F2">
@@ -76,7 +70,7 @@ Alternatively, you can also [run it from an IDE](https://github.com/casbin/casbi
 
 Similar to Casbin, Casbin-Server also uses adapters to provide policy storage. However, because Casbin-Server is a service instead of a library, the adapters have to be implemented inside Casbin-Server. As Golang is a static language, each adapter requires to import 3rd-party library for that database. We cannot import all those 3rd-party libraries inside Casbin-Server's code, as it causes dependency overhead.
 
-For now, [Gorm Adapter](https://github.com/casbin/casbin-server/blob/master/server/adapter.go) (with ``mssql``, ``mysql``, ``postgres``), MongoDB und Redis Adapter are built-in imports all commented. If you want to use ``Gorm Adapter`` with one of those databases, you should uncomment that import line, or add your own import, or even use another adapter by modifying Casbin-Server's source code.
+For now, [Gorm Adapter](https://github.com/apache/casbin-server/blob/master/server/adapter.go) (with ``mssql``, ``mysql``, ``postgres``), MongoDB und Redis Adapter are built-in imports all commented. If you want to use ``Gorm Adapter`` with one of those databases, you should uncomment that import line, or add your own import, or even use another adapter by modifying Casbin-Server's source code.
 
 To allow Casbin-Server to be production-ready, the adapter configuration supports environment variables. For example, assume we created a ``postgres`` database for our RBAC model and want Casbin-Server to use it. Assuming that the environment in which the Casbin-Server runs contains the necessary variables, we can simply use the ``$ENV_VAR`` notation to provide these to the adapter.
 
