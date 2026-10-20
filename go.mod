@@ -1,6 +1,6 @@
 module github.com/casbin/casbin-server
 
-go 1.19
+go 1.24
 
 require (
 	github.com/alicebob/miniredis/v2 v2.35.0
@@ -36,7 +36,7 @@ require (
 	github.com/jackc/pgx/v4 v4.17.2 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
-	github.com/klauspost/compress v1.13.6 // indirect
+	github.com/klauspost/compress v1.18.7 // indirect
 	github.com/kr/pretty v0.3.0 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
 	github.com/microsoft/go-mssqldb v0.17.0 // indirect
