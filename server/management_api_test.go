@@ -84,7 +84,7 @@ func testGetPolicy(t *testing.T, e *testEngine, res [][]string) {
 	myRes := extractFromArray2DReply(reply)
 	t.Log("Policy: ", myRes)
 
-	if !util.Array2DEquals(res, myRes) {
+	if !util.SortedArray2DEquals(res, myRes) {
 		t.Error("Policy: ", myRes, ", supposed to be ", res)
 	}
 }

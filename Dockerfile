@@ -1,4 +1,4 @@
-FROM golang:1.19 as BACK
+FROM golang:1.27 AS BACK
 
 RUN apt-get update && \
     apt-get -y install unzip build-essential autoconf libtool
